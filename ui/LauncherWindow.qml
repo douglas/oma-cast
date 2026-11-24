@@ -70,13 +70,13 @@ PanelWindow {
   }
   readonly property real zoom: window.general.uiZoom > 0 ? window.general.uiZoom : 1
   function px(value) { return Math.round(Style.space(value) * window.zoom) }
-  // The logo is pixel art on a 30-unit grid: at other sizes its edges straddle
-  // device pixels and blur. Snap the size to the nearest multiple of 15 device
-  // pixels, so every edge lands on a whole or half pixel. The result can be a
-  // fraction of a logical pixel (22.5 at 2x scale).
+  // The Omarchy logo glyph is drawn on a 15 px grid: at other sizes its thin
+  // strokes straddle device pixels and blur (27 px at 1.5x scale). Snap the
+  // size to the nearest multiple of 15 device pixels; the glyph also renders
+  // natively so FreeType hints it onto that grid.
   function crispLogoSize(size) {
     var ratio = window.devicePixelRatio || 1
-    return Math.max(1, Math.round(size * ratio / 15)) * 15 / ratio
+    return Math.round(Math.max(1, Math.round(size * ratio / 15)) * 15 / ratio)
   }
 
   readonly property var look: ({
@@ -931,7 +931,8 @@ PanelWindow {
         Logo {
           anchors.centerIn: parent
           visible: window.atRoot
-          size: window.crispLogoSize(window.px(22))
+          size: window.crispLogoSize(window.px(18))
+          color: window.look.accent
         }
 
         Text {
@@ -1174,7 +1175,8 @@ PanelWindow {
         Logo {
           anchors.horizontalCenter: parent.horizontalCenter
           visible: window.view.kind !== "alias"
-          size: window.crispLogoSize(window.px(30))
+          size: window.px(28)
+          color: window.look.accent
         }
         Text {
           anchors.horizontalCenter: parent.horizontalCenter
@@ -1241,7 +1243,8 @@ PanelWindow {
         Logo {
           anchors.verticalCenter: parent.verticalCenter
           visible: !window.toast
-          size: window.crispLogoSize(window.px(14))
+          size: window.crispLogoSize(window.px(11))
+          color: window.look.accent
         }
         Text {
           anchors.verticalCenter: parent.verticalCenter
